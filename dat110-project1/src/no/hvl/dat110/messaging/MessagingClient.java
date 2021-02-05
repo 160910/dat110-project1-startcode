@@ -22,7 +22,7 @@ public class MessagingClient {
 		Connection connection = null;
 
 		try {
-			Socket clientSocket = new Socket(MessageConfig.MESSAGINGHOST, MessageConfig.MESSAGINGPORT);
+			Socket clientSocket = new Socket(server, port);
 			connection = new Connection(clientSocket);
 
 		} catch (IOException e) {

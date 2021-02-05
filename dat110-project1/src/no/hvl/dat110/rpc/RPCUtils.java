@@ -19,7 +19,7 @@ public class RPCUtils {
 		byte[] encoded = new byte[str.length()+1];
 
 		encoded[0] = rpcid;
-		byte[] sb = str.getBytes();
+		byte[] sb = str.getBytes(StandardCharsets.UTF_8);
 
 		for (int i = 0; i < str.length(); i++) {
 			encoded[i+1] = sb[i];
@@ -89,9 +89,14 @@ public class RPCUtils {
 
 	public static int unmarshallInteger(byte[] data) {
 
+		byte[] integers = new byte[4];
+
+		for (int i = 0; i < data.length-1; i++) {
+			integers[i] = data[i+1];
+		}
+
 		// converts byte array to int
-		ByteBuffer bb = ByteBuffer.wrap(data, 1, data.length-1);
-		return bb.getInt();
+		return ByteBuffer.wrap(integers).getInt();
 
 	}
 }

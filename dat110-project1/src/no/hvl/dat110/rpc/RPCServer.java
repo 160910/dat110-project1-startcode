@@ -38,16 +38,16 @@ public class RPCServer {
 		while (!stop) {
 
 		   // - receive message containing RPC request
-			Message message = connection.receive();
+			byte[] message = connection.receive().getData();
 
 		   // - find the identifier for the RPC methods to invoke
-			int rpcid = message.getData()[0];
+			int rpcid = message[0];
 
 		   // - lookup the method to be invoked
 			RPCImpl method = services.get(rpcid);
 
 		   // - invoke the method
-			byte[] rpcreply = method.invoke(message.getData());
+			byte[] rpcreply = method.invoke(message);
 
 		   // - send back message containing RPC reply
 			Message reply = new Message(rpcreply);

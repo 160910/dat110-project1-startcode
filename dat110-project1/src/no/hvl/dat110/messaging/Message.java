@@ -9,7 +9,9 @@ public class Message {
 	private byte[] payload;
 
 	public Message(byte[] payload) {
-		this.payload = payload; // TODO: check for length within boundary
+		if (payload.length > 127)
+			throw new IllegalArgumentException("Payload kan ikkje vere større enn 127 bytes.");
+		this.payload = payload;
 	}
 
 	public Message() {
