@@ -1,5 +1,8 @@
 package no.hvl.dat110.rpc;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import no.hvl.dat110.TODO;
@@ -13,12 +16,13 @@ public class RPCUtils {
 	
 	public static byte[] marshallString(byte rpcid, String str) {
 
-		byte[] encoded;
+		byte[] encoded = new byte[str.length()+1];
 
-		// TODO: marshall RPC identifier and string into byte array
+		encoded[0] = rpcid;
+		byte[] sb = str.getBytes();
 
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
+		for (int i = 0; i < str.length(); i++) {
+			encoded[i+1] = sb[i];
 		}
 
 		return encoded;
@@ -26,26 +30,14 @@ public class RPCUtils {
 
 	public static String unmarshallString(byte[] data) {
 
-		String decoded;
-
-		// TODO: unmarshall String contained in data into decoded
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
-		}
-
-		return decoded;
+		return new String(data, 1, data.length-1, StandardCharsets.UTF_8);
 	}
 
 	public static byte[] marshallVoid(byte rpcid) {
 
-		byte[] encoded;
+		byte[] encoded = new byte[1];
 
-		// TODO: marshall RPC identifier in case of void type
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
-		}
+		encoded[0] = rpcid;
 
 		return encoded;
 
@@ -79,12 +71,17 @@ public class RPCUtils {
 
 	public static byte[] marshallInteger(byte rpcid, int x) {
 
-		byte[] encoded;
+		// Integer in java = 4 bytes, + 1 byte for rpcid
+		byte[] encoded = new byte[5];
 
-		// TODO: marshall RPC identifier and string into byte array
+		encoded[0] = rpcid;
 
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
+		ByteBuffer bb = ByteBuffer.allocate(4);
+		bb.putInt(x);
+		byte[] integer = bb.array();
+
+		for (int i = 0; i < integer.length; i++) {
+			encoded[i+1] = integer[i];
 		}
 
 		return encoded;
@@ -92,15 +89,9 @@ public class RPCUtils {
 
 	public static int unmarshallInteger(byte[] data) {
 
-		int decoded;
-
-		// TODO: unmarshall integer contained in data
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
-		}
-
-		return decoded;
+		// converts byte array to int
+		ByteBuffer bb = ByteBuffer.wrap(data, 1, data.length-1);
+		return bb.getInt();
 
 	}
 }
