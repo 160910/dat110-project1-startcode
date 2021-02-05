@@ -25,7 +25,10 @@ public class Message {
 		byte[] encoded = new byte[MessageConfig.SEGMENTSIZE];
 
 		encoded[0] = (byte) payload.length;
-		System.arraycopy(payload, 0, encoded, 1, payload.length - 1);
+
+		for (int i = 0; i < payload.length; i++) {
+			encoded[i+1] = payload[i];
+		}
 
 		return encoded;
 		
@@ -35,7 +38,10 @@ public class Message {
 
 		int receivedSize = received[0];
 		payload = new byte[receivedSize];
-		System.arraycopy(received, 1, payload, 0, receivedSize);
+
+		for (int i = 0; i < receivedSize; i++) {
+			payload[i] = received[i+1];
+		}
 		
 	}
 }
